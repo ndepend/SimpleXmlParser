@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<InspectionsExport>
+  <InspectionTypes>
+    <InspectionTypeInfo Id="Methods shouldn't be named NonCritical" Name="Methods shouldn't be named NonCritical" Category="Statistic Checks">
+      <Description>
+        // &lt;Name&gt;Methods shouldn't be named NonCritical&lt;/Name&gt;
+        warnif count &gt; 0 from m in JustMyCode.Methods
+        where m.FullNameLike("NonCritical")
+        select new { m }
+
+        // This triggers non critical rule violations, with multiple violated
+      </Description>
+    </InspectionTypeInfo> 
+  </InspectionTypes>
+  <Inspections>
+    <InspectionInstance Id="Methods shouldn't be named NonCritical" Line="8" Severity="WARN">
+      <Message>NonCriticalA()</Message>
+      <FilePath>c:\Code\bitbucket\ndepend-teamcity-plugin\Console\TestSets\TestApplication\TestApplication\StatisticChecks.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Methods shouldn't be named NonCritical" Line="12" Severity="WARN">
+      <Message>NonCriticalB()</Message>
+      <FilePath>c:\Code\bitbucket\ndepend-teamcity-plugin\Console\TestSets\TestApplication\TestApplication\StatisticChecks.cs</FilePath>
+    </InspectionInstance>
+  </Inspections>
+</InspectionsExport>

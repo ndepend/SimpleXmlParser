@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<InspectionsExport>
+  <InspectionTypes>
+    <InspectionTypeInfo Id="Methods shouldn't be named NonCritical" Name="Methods shouldn't be named NonCritical" Category="Statistic Checks">
+      <Description>
+        // &lt;Name&gt;Methods shouldn't be named NonCritical&lt;/Name&gt;
+        warnif count &gt; 0 from m in JustMyCode.Methods
+        where m.FullNameLike("NonCritical")
+        select new { m }
+
+        // This triggers non critical rule violations, with multiple violated
+      </Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Inspection with CDATA1" Name="Inspection with CDATA2" Category="Just for tests">
+      <Description>
+        <![CDATA[• <i>Rule Description:</i><br> It's not a hard, fast rule, but multiple asserts in a unit test is a smell. I'm setting this arbitrarily at 10 (RASD updated to 20), but you might want to let that number grow as your test suite grows. Every now and then, this might make sense. But, usually, it's an indicator that people haven't yet grokked unit testing. Each test is essentially a very directed, specific experiment with one setup, one action, one check (arrange, act, assert) If you have multiple asserts, then how do you know what a failure of the test means at a glance? Usually, if you have 2+ asserts in a test, you should have 2+ tests]]>
+      </Description>
+    </InspectionTypeInfo>
+  </InspectionTypes>
+  <Inspections>
+    <InspectionInstance Id="Methods shouldn't be named NonCritical/" Line="8" Severity="WARN">
+      <Message>NonCriticalA()</Message>
+      <FilePath>c:\Code\bitbucket\ndepend-teamcity-plugin\Console\TestSets\TestApplication\TestApplication\StatisticChecks.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Methods shouldn't be named NonCritical" Line="12" Severity="WARN">
+      <Message>NonCriticalB()</Message>
+      <FilePath>c:\Code\bitbucket\ndepend-teamcity-plugin\Console\TestSets\TestApplication\TestApplication\StatisticChecks.cs</FilePath>
+    </InspectionInstance>
+  </Inspections>
+</InspectionsExport>

@@ -1,0 +1,688 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<InspectionsExport>
+  <InspectionTypes>
+    <InspectionTypeInfo Id="Types with disposable instance fields must be disposable" Name="Types with disposable instance fields must be disposable" Category="Design">
+      <Description>
+        <![CDATA[• <i>Rule Description:</i><br> This rule warns when a class declares and implements an instance field that is a <i>System.IDisposable</i> type and the class does not implement <i>IDisposable</i>.</br></br>
+A class implements the <i>IDisposable</i> interface to dispose of unmanaged resources that it owns. An instance field that is an <i>IDisposable</i> type indicates that the field owns an unmanaged resource. A class that declares an <i>IDisposable</i> field indirectly owns an unmanaged resource and should implement the <i>IDisposable</i> interface. If the class does not directly own any unmanaged resources, it should not implement a finalizer.</br></br>
+This rules might report false positive in case the lifetime of the disposable objects referenced, is longer than the lifetime of the object that hold the disposable references. <hr> <br>• <i>How to Fix Issues:</i><br> To fix a violation of this rule, implement <i>IDisposable</i> and from the <i>IDisposable.Dispose()</i> method call the <i>Dispose()</i> method of the field(s).</br></br>
+The estimated Debt, which means the effort to fix such issue, is 5 minutes per type matched plus 3 minutes per disposable instance field.]]>
+      </Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Don't use obsolete types, methods or fields" Name="Don't use obsolete types, methods or fields" Category="Design">
+      <Description>
+        <![CDATA[• <i>Rule Description:</i><br> The attribute <i>System.ObsoleteAttribute</i> is used to tag types, methods or fields of an API that clients shouldn't use because these code elements will be removed sooner or later.</br></br>
+This rule warns about methods that use a type, a method or a field, tagged with <i>System.ObsoleteAttribute</i>. <hr> <br>• <i>How to Fix Issues:</i><br> Typically when a code element is tagged with <i>System.ObsoleteAttribute</i>, a <i>workaround message</i> is provided to clients.</br></br>
+This <i>workaround message</i> will tell you what to do to avoid using the obsolete code element.</br></br>
+The estimated Debt, which means the effort to fix such issue, is 5 minutes per type, method or field used.</br></br>
+Issues of this rule have a severity <b>High</b> because it is important to not rely anymore on obsolete code.]]>
+      </Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Assemblies with poor cohesion (RelationalCohesion)" Name="Assemblies with poor cohesion (RelationalCohesion)" Category="Architecture">
+      <Description>
+        <![CDATA[• <i>Rule Description:</i><br> This rule computes the <i>Relational Cohesion</i> metric for the application assemblies, and warns about wrong values.</br></br>
+The <i>Relational Cohesion</i> for an assembly, is the total number of relationship between types of the assemblies, divided by the number of types. In other words it is the average number of types in the assembly used by a type in the assembly.</br></br>
+As classes inside an assembly should be strongly related, the cohesion should be high. On the other hand, a value which is too high may indicate over-coupling. A good range for <i>Relational Cohesion</i> is <b>1.5 to 4.0</b>.</br></br>
+Notice that assemblies with less than 20 types are ignored. <hr> <br>• <i>How to Fix Issues:</i><br> Matches of this present rule might reveal either assemblies with specific coding constraints (like code generated that have particular structure) either issues in design.</br></br>
+In the second case, large refactoring can be planned not to respect this rule in particular, but to increase the overall design and code maintainability.</br></br>
+The severity of issues of this rule is <b>Low</b> because the code metric <i>Relational Cohesion</i> is an information about the code structure state but <b>is not actionable</b>, it doesn't tell precisely what to do obtain a better score.</br></br>
+Fixing actionable issues of others <b>Architecture</b> and <b>Code Smells</b> default rules will necessarily increase the <i>Relational Cohesion</i> scores.]]>
+      </Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Namespaces with poor cohesion (RelationalCohesion)" Name="Namespaces with poor cohesion (RelationalCohesion)" Category="Architecture">
+      <Description>
+        <![CDATA[• <i>Rule Description:</i><br> This rule computes the <i>Relational Cohesion</i> metric for the application namespaces, and warns about wrong values.</br></br>
+The <i>Relational Cohesion</i> for a namespace, is the total number of relationship between types of the namespaces, divided by the number of types. In other words it is the average number of types in the namespace used by a type in the namespace.</br></br>
+As classes inside a namespace should be strongly related, the cohesion should be high. On the other hand, a value which is too high may indicate over-coupling. A good range for <i>Relational Cohesion</i> is <b>1.5 to 4.0</b>.</br></br>
+Notice that namespaces with less than 20 types are ignored. <hr> <br>• <i>How to Fix Issues:</i><br> Matches of this present rule might reveal either namespaces with specific coding constraints (like code generated that have particular structure) either issues in design.</br></br>
+In the second case, refactoring sessions can be planned to increase the overall design and code maintainability.</br></br>
+You can get an overview of class coupling for a matched namespace by exporting the <i>ChildTypes</i> to the graph. (Right click the <i>ChildTypes</i> cells)</br></br>
+The severity of issues of this rule is <b>Low</b> because the code metric <i>Relational Cohesion</i> is an information about the code structure state but <b>is not actionable</b>, it doesn't tell precisely what to do obtain a better score.</br></br>
+Fixing actionable issues of others <b>Architecture</b> and <b>Code Smells</b> default rules will necessarily increase the <i>Relational Cohesion</i> scores.]]>
+      </Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Avoid publicly visible constant fields" Name="Avoid publicly visible constant fields" Category="Visibility">
+      <Description>
+        <![CDATA[• <i>Rule Description:</i><br> This rule warns about constant fields that are visible outside their parent assembly. Such field, when used from outside its parent assembly, has its constant value <i>hard-coded</i> into the client assembly. Hence, when changing the field's value, it is <i>mandatory</i> to recompile all assemblies that consume the field, else the program will run with different constant values in-memory. Certainly in such situation bugs are lurking. <hr> <br>• <i>How to Fix Issues:</i><br> Declare matched fields as <b>static readonly</b> instead of <b>constant</b>. This way, the field value is <i>safely changeable</i> without the need to recompile client assemblies.</br></br>
+Notice that enumeration value fields suffer from the same <i>potential pitfall</i>. But enumeration values cannot be declared as <i>static readonly</i> hence the rule comes with the condition <b>&amp;&amp; !f.IsEnumValue</b> to avoid matching these. Unless you decide to banish public enumerations, just let the rule <i>as is</i>.]]>
+      </Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Avoid static fields with a mutable field type" Name="Avoid static fields with a mutable field type" Category="Immutability">
+      <Description>
+        <![CDATA[• <i>Rule Description:</i><br> This rule warns about static fields whose field type is mutable. In such case the static field is holding a state that can be modified.</br></br>
+In <i>Object-Oriented-Programming</i> the natural artifact to hold states that can be modified is <b>instance fields</b>. Hence such static fields create <i>confusion</i> about the expected state at runtime.</br></br>
+More discussion on the topic can be found here: <a href="http://codebetter.com/patricksmacchia/2011/05/04/back-to-basics-usage-of-static-members/">http://codebetter.com/patricksmacchia/2011/05/04/back-to-basics-usage-of-static-members/</a> <hr> <br>• <i>How to Fix Issues:</i><br> To fix violations of this rule, make sure to hold mutable states through objects that are passed <b>explicitly</b> everywhere they need to be consumed, in opposition to mutable object hold by a static field that makes it modifiable from a bit everywhere in the program.]]>
+      </Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Unimplemented Interfaces" Name="Unimplemented Interfaces" Category="OverAbstractionStatsToMonitor">
+      <Description>
+        <![CDATA[<pre>// &lt;Name&gt;Unimplemented Interfaces&lt;/Name&gt;<br/>
+//This is widely considered to be an anti-pattern.  So-called &quot;marker&quot; types and interfaces.<br/>
+//These exist only so that you can reflect or cast and see what type they are, which violates the premise of OOP<br/>
+<br/>
+<br/>
+warnif count &gt; 0 <br/>
+<br/>
+from t in JustMyCode.Types<br/>
+let Implementers = t.TypesThatImplementMe.Count()<br/>
+<br/>
+where t.IsInterface &amp;&amp; Implementers == 0<br/>
+select new { t, Implementers }<br/>
+<br/>
+//JustMyCode.Types.Where(t =&gt; t.IsInterface).Select(t =&gt; <br/>
+//  new { t, Implementers = t.TypesThatImplementMe.Count() }<br/>
+//)<br/>
+<br/>
+</pre>]]>
+      </Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Number of 0 LoC types" Name="Number of 0 LoC types" Category="OverAbstractionStatsToMonitor">
+      <Description>
+        <![CDATA[<pre>// &lt;Name&gt;Number of 0 LoC types&lt;/Name&gt;<br/>
+//Types with no code in them are problematic in the same way that unimplemented interafaces are<br/>
+warnif count &gt; 0<br/>
+<br/>
+JustMyCode.Types.Where(t =&gt; !t.IsInterface &amp;&amp; !t.IsGeneratedByCompiler &amp;&amp; t.NbLinesOfCode == 0).Select(t =&gt; new {t, t.NbLinesOfCode})</pre>]]>
+      </Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Test Methods Without Assert" Name="Test Methods Without Assert" Category="Testing">
+      <Description>
+        <![CDATA[<pre>// &lt;Name&gt;Test Methods Without Assert&lt;/Name&gt;<br/>
+warnif count &gt; 0 <br/>
+<br/>
+from m in JustMyCode.Methods<br/>
+where m.HasAttribute(&quot;Xunit.FactAttribute&quot;.AllowNoMatch()) <br/>
+&amp;&amp; !m.IsUsing(&quot;Xunit.Assert&quot;.AllowNoMatch())<br/>
+<br/>
+select new { m }</pre>]]>
+      </Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Test Methods with Multiple Asserts" Name="Test Methods with Multiple Asserts" Category="Testing">
+      <Description><![CDATA[• <i>Rule Description:</i><br> It's not a hard, fast rule, but multiple asserts in a unit test is a smell. I'm setting this arbitrarily at 10 (RASD updated to 20), but you might want to let that number grow as your test suite grows. Every now and then, this might make sense. But, usually, it's an indicator that people haven't yet grokked unit testing. Each test is essentially a very directed, specific experiment with one setup, one action, one check (arrange, act, assert) If you have multiple asserts, then how do you know what a failure of the test means at a glance? Usually, if you have 2+ asserts in a test, you should have 2+ tests]]></Description>
+    </InspectionTypeInfo>
+    <InspectionTypeInfo Id="Long Tests" Name="Long Tests" Category="Testing">
+      <Description>
+        <![CDATA[<pre>// &lt;Name&gt;Long Tests&lt;/Name&gt;<br/>
+// Tests this long are usually doing waaaay too much<br/>
+<br/>
+warnif count &gt; 0<br/>
+<br/>
+from m in JustMyCode.Methods<br/>
+where  m.HasAttribute(&quot;Xunit.FactAttribute&quot;.AllowNoMatch()) <br/>
+&amp;&amp; m.NbLinesOfCode &gt; 20<br/>
+<br/>
+select new { m, m.ILNestingDepth }</pre>]]>
+      </Description>
+    </InspectionTypeInfo>
+  </InspectionTypes>
+  <Inspections>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="11" Severity="WARN">
+      <Message>Type: SIM2.Core.CommonServices.ParameterService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\CommonServices\ParameterService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="13" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.ADSPersonDataLoaderService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\ADSPersonDataLoaderService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="12" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.ApplicationUserService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\ApplicationUserService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="14" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.CampusService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\CampusService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="15" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.DivisionService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\DivisionService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="12" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.ExternalLinkService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\ExternalLinkService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="9" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.MetricService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\MetricService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="14" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.OfficeService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\OfficeService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="17" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.PersonService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\PersonService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="10" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.SecurityPermissionService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\SecurityPermissionService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="12" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.SecurityRoleService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\SecurityRoleService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="11" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.TeamPeopleService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\TeamPeopleService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="15" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.TeamService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\TeamService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="14" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.TitleService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\TitleService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="15" Severity="WARN">
+      <Message>Type: SIM2.Core.ApplicationServices.UserManagementService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\UserManagementService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="10" Severity="WARN">
+      <Message>Type: SIM2.Core.ADSPersonRepository.ADSPersonDataRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ADSPersonRepository\ADSPersonDataRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="27" Severity="WARN">
+      <Message>Type: SIM2.Core.TaskServices.SerializedCronSchedule</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\TaskServices\SerializedCronSchedule.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="16" Severity="WARN">
+      <Message>Type: SIM2.Core.TaskServices.TaskConfigService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\TaskServices\TaskConfigService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="10" Severity="WARN">
+      <Message>Type: SIM2.Core.TaskServices.TaskHistoryService</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\TaskServices\TaskHistoryService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="11" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.AreaOfConcentrationRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\AreaOfConcentrationRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="10" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.CampusRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\CampusRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="11" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.DivisionRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\DivisionRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="11" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.ExternalLinkQueryRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\ExternalLinkQueryRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="10" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.OfficeRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\OfficeRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="14" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.ParameterRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\ParameterRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="15" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.PersonRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\PersonRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="10" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.PersonStatusRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\PersonStatusRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="11" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.ReportGenerationRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\ReportGenerationRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="11" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.SIM2QueryRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\SIM2QueryRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="11" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.SpecializationRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\SpecializationRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="11" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.TaskHistoryQueryRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\TaskHistoryQueryRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="10" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.TeamPeopleRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\TeamPeopleRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="10" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.TeamRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\TeamRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Types with disposable instance fields must be disposable" Line="10" Severity="WARN">
+      <Message>Type: SIM2.Core.Repositories.TitleRepository</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\TitleRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="8" Severity="WARN">
+      <Message>Method: SIM2.Core.Utility.ExceptionExtensions.FormatExceptionMessage(Exception,Int32)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Utility\ExceptionExtensions.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="43" Severity="WARN">
+      <Message>Method: SIM2.Core.ApplicationServices.ADSPersonDataLoaderService.WipeActiveDirectoryTable()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\ADSPersonDataLoaderService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="52" Severity="WARN">
+      <Message>Method: SIM2.Core.ApplicationServices.ADSPersonDataLoaderService.LoadADQueryDataForSIM()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\ADSPersonDataLoaderService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="156" Severity="WARN">
+      <Message>Method: SIM2.Core.ApplicationServices.ADSPersonDataLoaderService.UpdateTerminatedMembersQuery()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\ADSPersonDataLoaderService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="47" Severity="WARN">
+      <Message>Method: SIM2.Core.ApplicationServices.CampusService.Delete(Int32)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\CampusService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="50" Severity="WARN">
+      <Message>Method: SIM2.Core.ApplicationServices.DivisionService.Delete(Int32)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\DivisionService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="62" Severity="WARN">
+      <Message>Method: SIM2.Core.ApplicationServices.ExcelGenerationService.AllRecordsReport()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\ExcelGenerationService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="47" Severity="WARN">
+      <Message>Method: SIM2.Core.ApplicationServices.OfficeService.Delete(Int32)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\OfficeService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="24" Severity="WARN">
+      <Message>Method: SIM2.Core.ApplicationServices.TeamService.DeleteTeam(Int32)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\TeamService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="45" Severity="WARN">
+      <Message>Method: SIM2.Core.ApplicationServices.TitleService.Delete(Int32)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\ApplicationServices\TitleService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="51" Severity="WARN">
+      <Message>Method: SIM2.Core.TaskServices.SerializedCronSchedule.IsTaskReadyToRun()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\TaskServices\SerializedCronSchedule.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="78" Severity="WARN">
+      <Message>Method: SIM2.Core.TaskServices.TaskConfigService.SetSchedule(String,String)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\TaskServices\TaskConfigService.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="21" Severity="WARN">
+      <Message>Method: SIM2.Core.Repositories.ReportGenerationRepository.PingboardReport()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\ReportGenerationRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="46" Severity="WARN">
+      <Message>Method: SIM2.Core.Repositories.ReportGenerationRepository.GenerateActiveStaffReport(Boolean)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\ReportGenerationRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="78" Severity="WARN">
+      <Message>Method: SIM2.Core.Repositories.ReportGenerationRepository.GenerateAllPersonReport()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\ReportGenerationRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="73" Severity="WARN">
+      <Message>Method: SIM2.Core.Repositories.SIM2QueryRepository.GetPersonReportResponseList(String)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\SIM2QueryRepository.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="39" Severity="WARN">
+      <Message>Method: SIM2.Web.Tasks.ScheduledTaskRunner.ExecuteAsync(CancellationToken)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Web\Tasks\ScheduledTaskRunner.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="10" Severity="WARN">
+      <Message>Method: SIM2.Web.ErrorHandling.ValidationProblemDetailsResult.ExecuteResultAsync(ActionContext)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Web\ErrorHandling\ValidationProblemDetailsResult.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="31" Severity="WARN">
+      <Message>Method: SIM2.Web.Controllers.TeamPeopleController.Get(Int32)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Web\Controllers\TeamPeopleController.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="218" Severity="WARN">
+      <Message>Method: SIM2.Tests.TestData.ContextData.AddTaskHistoryEntries(SIM2Context)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\TestData\ContextData.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="78" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.CampusControllerShould.Succeed_When_Requesting_Authenticated_Delete_Campus()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\CampusControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="60" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.DivisionControllerShould.Succeed_To_Update_Division_Name(String,Boolean)</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\DivisionControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="102" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.DivisionControllerShould.Fail_To_Delete_Division_When_UnAuthorized()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\DivisionControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="99" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.OfficeControllerShould.Succeed_When_Requesting_Authenticated_Delete_Office()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\OfficeControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="151" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.OfficeControllerShould.Fail_An_UnAuthorized_Delete_Office()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\OfficeControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="83" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.TeamControllerShould.Succeed_When_Requesting_Authenticated_Delete_Team()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\TeamControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="91" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.TitleControllerShould.Succeed_When_Requesting_Authenticated_Delete_Title()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\TitleControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="108" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.TitleControllerShould.Fail_When_Requesting_Authenticated_Delete_NonExistent_Title()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\TitleControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Don't use obsolete types, methods or fields" Line="160" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.TitleControllerShould.Fail_To_Delete_UnAuthorized_Title()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\TitleControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Assemblies with poor cohesion (RelationalCohesion)" Line="1" Severity="WARN">
+      <Message>Assembly: SIM2.Web</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Web\Program.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Namespaces with poor cohesion (RelationalCohesion)" Line="4" Severity="WARN">
+      <Message>Namespace: SIM2.Core.Dto</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Dto\AreaOfConcentrationDto.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Namespaces with poor cohesion (RelationalCohesion)" Line="2" Severity="WARN">
+      <Message>Namespace: SIM2.Core.Domain</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Domain\ADQueryDataForSIM.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Namespaces with poor cohesion (RelationalCohesion)" Line="6" Severity="WARN">
+      <Message>Namespace: SIM2.Core.Repositories.Configurations</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Repositories\Configurations\ADQueryDataForSIMConfiguration.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Core.TaskServices.ScheduledTaskStatus.Completed</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Core.TaskServices.ScheduledTaskStatus.Failed</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Core.TaskServices.ScheduledTaskStatus.InProgress</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Web.Utility.Permissions.BasicPermission</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Web.Utility.Permissions.ManageMaintenance</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Web.Utility.Permissions.ManageSystemConfig</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Web.Utility.Permissions.ManageSecurity</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Web.Utility.Permissions.ViewPeople</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Web.Utility.Permissions.ManagePeople</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Web.Utility.Permissions.ViewReports</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestType.Category</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestType.Integration</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestType.Unit</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="12" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.ContextData.TestTitleName</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\TestData\ContextData.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="12" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.ContextData.TestOfficeName</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\TestData\ContextData.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="12" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.ContextData.Division1Name</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\TestData\ContextData.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="12" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.ContextData.Division2Name</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\TestData\ContextData.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.TestRoleNames.GlobalAdminRole</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.TestRoleNames.RoleToDelete</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.TestRoleNames.EmptyRole</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.TestRoleNames.RoleToUpdateForPermissions</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.TestRoleNames.RoleToUpdateForDescription</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.TestUserNames.SysAdminUser</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.TestUserNames.UnauthorizedUser</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.TestUserNames.UserToDelete</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid publicly visible constant fields" Line="0" Severity="WARN">
+      <Message>Field: SIM2.Tests.TestData.TestUserNames.UserToUpdate</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid static fields with a mutable field type" Line="7" Severity="WARN">
+      <Message>Field: SIM2.Core.Domain.Campus.AllCampus</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Domain\Campus.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Avoid static fields with a mutable field type" Line="7" Severity="WARN">
+      <Message>Field: SIM2.Core.Domain.Team.AllTeam</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Core\Domain\Team.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Unimplemented Interfaces" Line="0" Severity="WARN">
+      <Message>Type: SIM2.Web.Hubs.ISystemMessagingHub</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Number of 0 LoC types" Line="0" Severity="WARN">
+      <Message>Type: SIM2.Core.Dto.PersonResponse</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Number of 0 LoC types" Line="0" Severity="WARN">
+      <Message>Type: SIM2.Core.TaskServices.ScheduledTaskStatus</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Number of 0 LoC types" Line="0" Severity="WARN">
+      <Message>Type: SIM2.Web.Utility.Permissions</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Number of 0 LoC types" Line="0" Severity="WARN">
+      <Message>Type: SIM2.Tests.TestType</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Number of 0 LoC types" Line="0" Severity="WARN">
+      <Message>Type: SIM2.Tests.TestData.TestRoleNames</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Number of 0 LoC types" Line="0" Severity="WARN">
+      <Message>Type: SIM2.Tests.TestData.TestUserNames</Message>
+      <FilePath>UnknownLocation</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods Without Assert" Line="24" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Tasks.ScheduledTaskRunnerShould.Run_Task_When_Task_Is_Ready_To_Run()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Tasks\ScheduledTaskRunnerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods Without Assert" Line="77" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Tasks.ScheduledTaskRunnerShould.Not_Run_Tasks_When_Task_Is_Not_Ready_To_Run()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Tasks\ScheduledTaskRunnerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods Without Assert" Line="71" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.TaskServices.TaskHistoryServiceShould.Fail_LogCompletedTask_With_Bad_Id()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\TaskServices\TaskHistoryServiceShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="31" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.AccountControllerShould.Get_Valid_HealthCheck()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\AccountControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="45" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.AccountControllerShould.Get_Valid_ReadinessCheck()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\AccountControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="59" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.AccountControllerShould.Get_LoggingCheck()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\AccountControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="73" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.AccountControllerShould.Return_Error_For_ExceptionCheck()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\AccountControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="89" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.AccountControllerShould.Logout_of_Cas()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\AccountControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="99" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.OfficeControllerShould.Succeed_When_Requesting_Authenticated_Delete_Office()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\OfficeControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="29" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.SystemControllerShould.Get_Environment()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\SystemControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="103" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.TaskConfigControllerShould.SetSchedule_When_Given_Valid_Name_And_Schedule()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\TaskConfigControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="83" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.TeamControllerShould.Succeed_When_Requesting_Authenticated_Delete_Team()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\TeamControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="35" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Return_All_Users()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="48" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Include_Roles_In_User_Results()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="63" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Include_Permissions_In_User_Results()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="78" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Return_All_Roles()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="91" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Include_Permissions_In_Role_Results()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="107" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Return_All_Permissions()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="120" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Create_User()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="145" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Update_Existing_User_With_New_Role()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="177" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Fail_To_Delete_A_Nonexistent_User()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="191" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Create_Role()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="218" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Fail_To_Create_Role_When_Missing_Description()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="239" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Fail_To_Create_Role_When_Name_Is_A_Duplicate()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="264" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Update_Existing_Role_With_New_Description()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="291" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Update_Existing_Role_With_New_Permissions()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="348" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Controllers.UserManagementControllerShould.Fail_To_Delete_A_Nonexistent_Role()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Controllers\UserManagementControllerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="44" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.Utility.ExceptionExtensionsShould.FormatExceptionMessage_With_Max_Length_Of_22_Characters()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\Utility\ExceptionExtensionsShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="22" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.TaskServices.ScheduleBuilderShould.GetAll_2_Schedules_For_The_2_Tasks_Given()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\TaskServices\ScheduleBuilderShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="34" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.TaskServices.TaskHistoryServiceShould.LogStartTask_With_Expected_Data()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\TaskServices\TaskHistoryServiceShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="51" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.TaskServices.TaskHistoryServiceShould.LogCompletedTask_With_Expected_Data()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\TaskServices\TaskHistoryServiceShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="94" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.TaskServices.TaskHistoryServiceShould.LogWarningTask_With_Expected_Data()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\TaskServices\TaskHistoryServiceShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="114" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.TaskServices.TaskHistoryServiceShould.LogFailedTask_With_Expected_Data()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\TaskServices\TaskHistoryServiceShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="64" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.Repositories.ParameterRepositoryShould.GetTaskHistoryRowsToDisplay_Of_Int()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\Repositories\ParameterRepositoryShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="149" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.CommonServices.ParameterServiceShould.GetTaskHistoryRowsToDisplay_Of_Int()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\CommonServices\ParameterServiceShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="20" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.ApplicationServices.ApplicationUserServiceShould.Throw_Retrieving_Null_User_Info()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\ApplicationServices\ApplicationUserServiceShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="29" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.ApplicationServices.MetricServiceShould.Log_Page_Visit()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\ApplicationServices\MetricServiceShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Test Methods with Multiple Asserts" Line="97" Severity="WARN">
+      <Message>Method: SIM2.Tests.Core.ApplicationServices.UserManagementServiceShould.Create_User_With_Only_Existing_System_Roles()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Core\ApplicationServices\UserManagementServiceShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Long Tests" Line="24" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Tasks.ScheduledTaskRunnerShould.Run_Task_When_Task_Is_Ready_To_Run()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Tasks\ScheduledTaskRunnerShould.cs</FilePath>
+    </InspectionInstance>
+    <InspectionInstance Id="Long Tests" Line="77" Severity="WARN">
+      <Message>Method: SIM2.Tests.Web.Tasks.ScheduledTaskRunnerShould.Not_Run_Tasks_When_Task_Is_Not_Ready_To_Run()</Message>
+      <FilePath>E:\BuildAgent\work\732704bb7d204ee\SIM2\SIM2.Tests\Web\Tasks\ScheduledTaskRunnerShould.cs</FilePath>
+    </InspectionInstance>
+  </Inspections>
+</InspectionsExport>
