@@ -31,6 +31,9 @@ This XML parser supports:
 </ul>
 We believe that for our usage it is bug free because it is fully tested for all XML documents our users provided us with. It is also <a href="https://github.com/ndepend/SimpleXmlParser/tree/master/SimpleXmlParserTests" target="_blank" rel="noopener">100% covered by the test suite</a>. <strong>However the purpose was not to support the entire XML specification so it is certainly buggy for more advanced usages</strong>.
 
+![Simple Xml Parser Coverage](https://user-images.githubusercontent.com/511445/182353472-a2ab5125-6df1-47c8-90a7-9bc25f41b40d.png)
+
+
 ## Simple Xml Parser Design
 
 Our plan is to only fix potential bugs users might face in the context of the NDepend TeamCity plugin but not to improve the overall XML support. Hence the design and performance were not a priority and they could be improved in numerous ways.
